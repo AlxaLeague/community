@@ -1,0 +1,127 @@
+ 
+ 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>基于 layui 的极简社区页面模版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="fly,layui,前端社区">
+  <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+  <div th:replace="common/link"></div>
+</head>
+<body>
+<div th:replace="common/header"></div>
+
+<div th:replace="common/column"></div>
+
+<div class="layui-container">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8">
+      <div class="fly-panel" style="margin-bottom: 0;">
+
+          <ul class="fly-list" th:each="topic,iterStat: ${topicList}">
+            <li>
+              <a th:href="'/user/home/'+${topic.uid}" class="fly-avatar">
+                <img th:src="${topic.avatar}">
+              </a>
+              <h2>
+                <a class="layui-badge" th:text="${topic.clazz}">动态</a>
+                <!--<a href="jie/detail.html">基于 layui 的极简社区页面模版</a>-->
+                <a th:href="'/jie/detail/'+${topic.thesisid}" th:text="${topic.title}">基于 layui 的极简社区页面模版</a>
+              </h2>
+              <div class="fly-list-info">
+                <a th:href="'/user/home/'+${topic.uid}">
+                  <cite th:text="${topic.username}">贤心</cite>
+                  <i class="iconfont icon-renzheng" title="认证信息：jizhi"></i>
+                  <i class="layui-badge fly-badge-vip" th:text="${topic.vip}">VIP3</i>
+                </a>
+                <span th:text="${topic.timestamp}">刚刚</span>
+
+                <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> <span th:text="${topic.experionce}"></span></span>
+                <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
+                <span class="fly-list-nums">
+                <i class="iconfont icon-pinglun1" title="回答"></i> <span th:text="${topic.commentcount}"></span>
+              </span>
+              </div>
+              <div class="fly-list-badge">
+                <!--<span class="layui-badge layui-bg-red">精帖</span>-->
+              </div>
+            </li>
+
+          </ul>
+
+
+        <div style="text-align: center" th:if="${search != 1}">
+          <div class="laypage-main">
+            <!--<span class="laypage-curr">1</span>-->
+            <!--<a th:href="'/jie/index/2/'+${clazz}">2</a>-->
+            <!--<a th:href="'/jie/index/2/'+${clazz}">3</a>-->
+            <!--<a th:href="'/jie/index/2/'+${clazz}">4</a>-->
+            <!--<a th:href="'/jie/index/2/'+${clazz}">5</a>-->
+            <!--<span>…</span>-->
+            <!--<a th:href="'/jie/index/2/'+${clazz}" class="laypage-last" title="尾页">尾页</a>-->
+            <!--<a hth:href="'/jie/index/2/'+${clazz}" class="laypage-next">下一页</a></div>-->
+
+            <!--<a th:if="${page-1}==0" th:href="'/jie/index/'+1+'/'+${clazz}">第一页</a>-->
+
+            <a th:if="${page-1}!=0" th:href="'/jie/index/'+${page-1}+'/'+${clazz}">上一页</a>
+            <a th:text="${page}">上一页</a>
+            <a th:if="${tail}!=1" th:href="'/jie/index/'+${page+1}+'/'+${clazz}">下一页</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="layui-col-md4">
+
+      <div class="fly-panel">
+        <h3 class="fly-panel-title">温馨通道</h3>
+        <ul class="fly-panel-main fly-list-static">
+          <li th:each="channel,iterStat: ${channelList}">
+            <a th:href="@{${channel.getLink()}}" target="_blank" th:text="${channel.getTitle()}">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
+          </li>
+        </ul>
+      </div>
+
+
+      <dl class="fly-panel fly-list-one">
+        <dt class="fly-panel-title">本周热议</dt>
+        <div th:each="thesis1,iterStat: ${thesisList}">
+          <dd>
+            <a th:href="'/jie/detail/'+${thesis1.thesisid}" th:text="${thesis1.title}"></a>
+            <!--<a th:href="'/jie/detail/'+${thesis1.thesisid}"><p th:text="${thesis1.title}"></p></a>-->
+            <i class="iconfont icon-pinglun1"></i>
+            <span th:text="${thesis1.commentcount}"> 16</span>
+            <!--<span th:texe="${thesis1.commentcount}"> 16</span>-->
+          </dd>
+        </div>
+
+        <!-- 无数据时 -->
+        <!--
+        <div class="fly-none">没有相关数据</div>
+        -->
+      </dl>
+
+      <div class="fly-panel">
+        <div class="fly-panel-title">
+          广告
+        </div>
+        <div class="fly-panel-main" th:each="advertising,iterStat: ${advertisings}">
+          <a th:href="@{${advertising.advertisinglink}}" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;" th:text="${advertising.advertisingcontent}">LayIM 3.0 - layui 旗舰之作</a>
+        </div>
+      </div>
+      <div class="fly-panel" style="padding: 20px 0; text-align: center;">
+        <img src="/images/weixin/weixin.png" style="max-width: 100%;" alt="weixin">
+        <p style="position: relative; color: #666;">微信扫码添加</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="common/footer"></div>
+
+</body>
+</html>

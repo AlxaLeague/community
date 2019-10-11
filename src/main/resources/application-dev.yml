@@ -1,0 +1,87 @@
+spring:
+#  kafka:
+#    bootstrap-servers: 127.0.0.1:9092
+#    consumer:
+#      # 指定一个默认的组名
+#      group-id: kafka2
+#      # earliest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
+#      # latest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+#      # none:topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
+#      auto-offset-reset: earliest
+#      # key/value的反序列化
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#    producer:
+#      # key/value的序列化
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      # 批量抓取
+#      batch-size: 65536
+#      # 缓存容量
+#      buffer-memory: 524288
+
+  thymeleaf:
+    cache: false
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 3000
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    timeout: 2000ms
+
+
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+#redis
+#redis:
+#  database: 1
+#  host: 127.0.0.1
+#  port: 6379
+#  password:
+#  jedis:
+#    pool:
+#      max-active: 3000
+#      max-wait: -1ms
+#      max-idle: 8
+#      min-idle: 0
+#  timeout: 2000ms
+
+
+
+logging:
+  config: classpath:logback.xml
+
+dubbo:
+  application:
+    qosEnable: true
+    qosPort: 12345
+    qosAcceptForeignIp: false
+    name: springdubbo
+    timeout: 5000
+  registry:
+    address: zookeeper://127.0.0.1:2181
+    check: false
+  protocol:
+    name: dubbo
+  reference:
+    check: false
+    scan:
+      basePackages: com.axing.service
+
+
+#  dubbo.application.qosEnable=true
+#  dubbo.application.qosPort=33333
+#  dubbo.application.qosAcceptForeignIp=false
+
+static :
+  custom :
+    avatar : E://workspace//Graduation_Project//jizhicommunityweb//src//main//resources//static//images//avatar//
+#    avatar : E://workspace//Graduation_Project//jizhicommunityweb//src//main//resources//static//custom//avatar//

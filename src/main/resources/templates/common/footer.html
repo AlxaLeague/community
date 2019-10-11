@@ -1,0 +1,46 @@
+<div class="fly-footer">
+  <p> Power by <a href="http://www.layui.com/" target="_blank">layui.com</a></p>
+  <p>
+    <!--<a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>-->
+    <!--<a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>-->
+    <a href="">极智社区</a>
+    <a href="">author:Axing</a>
+    <a href="">Email:1284956848@qq.com</a>
+  </p>
+</div>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+layui.cache.page = 'user';
+layui.cache.user = {
+  username: '游客'
+  ,uid: -1
+  ,avatar: '/images/avatar/00.jpg'
+  ,experience: 83
+  ,sex: '男'
+};
+layui.config({
+  version: "3.0.0"
+  ,base: '/mods/'  //这里实际使用时，建议改成绝对路径
+}).extend({
+  fly: 'index'
+}).use('fly');
+</script>
+
+<!--<script src="/layui/layui.js"></script>-->
+<!--<script>-->
+    <!--layui.cache.page = 'user';-->
+    <!--layui.cache.user = {-->
+        <!--username: '游客'-->
+        <!--,uid: -1-->
+        <!--,avatar: '/images/avatar/00.jpg'-->
+        <!--,experience: 83-->
+        <!--,sex: '男'-->
+    <!--};-->
+    <!--layui.config({-->
+        <!--version: "2.0.0"-->
+        <!--,base: '/mods/'-->
+    <!--}).extend({-->
+        <!--fly: 'index'-->
+    <!--}).use('fly');-->
+<!--</script>-->

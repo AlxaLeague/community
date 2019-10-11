@@ -1,0 +1,23 @@
+mybatis:
+  type-aliases-package: com.axing.jizhicommunity.entity
+
+#���ݿ�
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://123.206.135.16:3306/recycle?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    name: root
+    password: 123456
+  #redis
+  redis:
+    database: 4
+    host: 123.206.135.16
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 3000
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    timeout: 2000ms

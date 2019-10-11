@@ -1,0 +1,280 @@
+ 
+ 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Fly Template v3.0，基于 layui 的极简社区页面模版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="fly,layui,前端社区">
+  <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+  <div th:replace="common/link"></div>
+  <!--<script>-->
+      <!--$(document).ready(function(){-->
+          <!--alert("2");-->
+      <!--});-->
+  <!--</script>-->
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+  </script>
+  <script type="text/javascript">
+    var content;
+    function myfun()
+    {
+        content=document.getElementById("thesiscontent").innerText;
+        document.getElementById('thesiscontent').innerHTML = "";
+        document.getElementById('thesiscontent').insertAdjacentHTML("beforeEnd",content);
+
+        // var cont=document.getElementById("plcontent").innerText;
+        // alert(cont)
+        $(".plcontent").each(function(){
+            var pl = $(this).html();
+            pl=""+pl+" ";
+            pl=pl.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+            // alert($(this).html());
+            // alert(content);
+            // alert(pl);
+            $(this).empty();
+            $(this).append(pl);
+        })
+
+
+
+
+    };
+    function zan(thesisid,plid)
+    {
+        // alert(plid);
+        $.post("/jie/pinglun/zan",
+            {
+                "thesisid":thesisid,
+                "plid":plid
+            },
+            function(data,status){
+                location.reload();
+            });
+    };
+    function huifu(username)
+    {
+        var zan = $("#L_content").val();
+        zan = zan + " @"+username;
+        alert(zan);
+        $("#L_content").val(zan);
+    };
+    function del(plid)
+    {
+        alert(plid);
+        $.post("/jie/pinglun/del",
+            {
+                "plid":plid
+            },
+            function(data,status){
+                location.reload();
+            });
+    };
+      　　      　　/*用window.onload调用myfun()*/
+      // window.onload = myfun;//不要括号
+
+
+    $(document).ready(function(){
+        myfun();
+    });
+  </script>
+</head>
+<body>
+
+<div th:replace="common/header"></div>
+<div th:replace="common/column"></div>
+
+<div class="layui-container">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8 content detail">
+      <div class="fly-panel detail-box">
+        <h1 th:text="${thesis.title}">Fly Template v3.0，基于 layui 的极简社区页面模版</h1>
+        <div class="fly-detail-info">
+          <!-- <span class="layui-badge">审核中</span> -->
+          <span class="layui-badge layui-bg-green fly-detail-column" th:text="${thesis.clazz}" th:if="${thesis.clazz} != null">动态</span>
+          
+          <!--<span class="layui-badge" style="background-color: #999;">未结</span>-->
+          <!-- <span class="layui-badge" style="background-color: #5FB878;">已结</span> -->
+          <span th:if="${thesisstatelable} == 1">
+          <span th:if="*{thesisstate.stick} != null"><span class="layui-badge layui-bg-black" th:text="*{thesisstate.stick}" >置顶</span></span>
+          <span th:if="*{thesisstate.finepasting} != null"><span class="layui-badge layui-bg-red" th:text="*{thesisstate.finepasting}" th:if="*{thesisstate.finepasting} != null">精帖</span></span>
+          </span>
+          <div class="fly-admin-box" data-id="123">
+            <!--<span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>-->
+            
+            <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span> -->
+            <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
+            
+            <!--<span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span> -->
+            <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> -->
+          </div>
+          <span class="fly-list-nums"> 
+            <a href="#comment"><i class="iconfont" title="回答" >&#xe60c;</i> <span th:text="${commentnum}"></span></a>
+            <i class="iconfont" title="人气" >&#xe60b;</i> <span th:text="${thesis.look}"></span>
+          </span>
+        </div>
+        <div class="detail-about">
+          <a class="fly-avatar" href="../user/home.html">
+            <!--detailuserInfo-->
+            <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">-->
+            <img th:src="${detailuserInfo.avatar}" alt="问题作者标签">
+          </a>
+          <div class="fly-detail-user">
+            <a href="../user/home.html" class="fly-link">
+              <cite th:text="${detailuserInfo.username}">贤心</cite>
+              <i class="iconfont icon-renzheng" title="认证信息：极智作者"></i>
+              <i class="layui-badge fly-badge-vip" th:text="${detailuserInfo.vip}">VIP3</i>
+            </a>
+            <span th:text="${thesis.timestamp}">2017-11-30</span>
+          </div>
+          <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
+
+            <span style="padding-right: 10px; color: #FF7200" th:text="'悬赏：'+${thesis.experionce}+' 飞吻'">悬赏：60飞吻</span>
+            <span class="layui-btn layui-btn-xs jie-admin" type="edit" th:if="${collectId} != null"><a th:href="'/jie/cancelCollect/'+${thesis.thesisid}+'/'+${collectId}">取消收藏</a></span>
+            <span class="layui-btn layui-btn-xs jie-admin" type="edit" th:if="${collectId} == null"><a th:href="'/jie/collect/'+${thesis.thesisid}">收藏此贴</a></span>
+
+            <span class="layui-btn layui-btn-xs jie-admin" type="edit" th:if="${edit} == 1"><a th:href="'/jie/edit/'+${thesis.thesisid}">编辑此贴</a></span>
+            <span class="layui-btn layui-btn-xs jie-admin layui-bg-red" type="edit" th:if="${edit} == 1"><a th:href="'/jie/del/'+${thesis.thesisid}">删除此贴</a></span>
+          </div>
+        </div>
+        <!--<div class="detail-body photos" th:text="${thesis.contenthtml}" id="thesiscontent">-->
+        <div class="detail-body photos" id="thesiscontent" th:inline="text">
+          [[${thesis.contenthtml}]]
+
+
+        </div>
+      </div>
+
+      <div class="fly-panel detail-box" id="flyReply">
+        <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+          <legend>回帖</legend>
+        </fieldset>
+
+        <ul class="jieda" id="jieda" th:each="pinglun,iterStat: ${pinglunList}">
+          <li data-id="111" class="jieda-daan">
+            <a name="item-1111111111"></a>
+            <div class="detail-about detail-about-reply">
+              <a class="fly-avatar" href="">
+                <img th:src="${pinglun.avatar}" alt="">
+                <!--<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt=" ">-->
+              </a>
+              <div class="fly-detail-user">
+                <a href="" class="fly-link">
+                  <cite th:text="${pinglun.username}">贤心</cite>
+                  <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
+                  <i class="layui-badge fly-badge-vip" th:text="${pinglun.vip}">VIP3</i>
+                </a>
+                
+                <!--<span>(楼主)</span>-->
+                <!--
+                <span style="color:#5FB878">(管理员)</span>
+                <span style="color:#FF9E3F">（社区之光）</span>
+                <span style="color:#999">（该号已被封）</span>
+                -->
+              </div>
+
+              <div class="detail-hits">
+                <span th:text="${pinglun.pltimestamp}">2017-11-30</span>
+              </div>
+
+              <!--<i class="iconfont icon-caina" title="最佳答案"></i>-->
+            </div>
+            <div class="detail-body jieda-body photos">
+              <!--<p class="plcontent" th:text="${pinglun.plcontent}+${iterStat.index}">香菇那个蓝瘦，这是一条被采纳的回帖</p>-->
+              <p class="plcontent" th:text="${pinglun.plcontent}">香菇那个蓝瘦，这是一条被采纳的回帖</p>
+            </div>
+
+            <div class="jieda-reply">
+              <span th:if="${pinglun.zan} == 1">
+                <span class="jieda-zan zanok" type="zan" th:onclick="zan([[${thesis.thesisid}]],[[${pinglun.plid}]])">
+                  <span class="layui-hide" th:text="${pinglun.plid}"></span>
+                  <i class="iconfont icon-zan"></i>
+                  <em th:text="${pinglun.praise}">66</em>
+                </span>
+              </span>
+              <span th:if="${pinglun.zan} != 1">
+                <span class="jieda-zan zanok" type="zan" th:onclick="zan([[${thesis.thesisid}]],[[${pinglun.plid}]])">
+                  <span class="layui-hide" th:text="${pinglun.plid}"></span>
+                  <i class="iconfont icon-zan" style=" color: #DDDDDD;"></i>
+                  <em th:text="${pinglun.praise}" style="color: #DDDDDD;">66</em>
+                </span>
+              </span>
+              <span type="reply" th:onclick="huifu([[${pinglun.username}]])">
+                <a href="#comment">
+                  <i class="iconfont icon-svgmoban53"></i>
+                  回复
+                </a>
+
+              </span>
+              <div class="jieda-admin" th:if="${pinglun.del}==1">
+                <!--<span type="edit"><a>编辑</a></span>-->
+                <span type="del" th:onclick="del([[${pinglun.plid}]])"><a>删除</a></span>
+                <!-- <span class="jieda-accept" type="accept">采纳</span> -->
+              </div>
+            </div>
+          </li>
+          
+
+        </ul>
+        
+        <div class="layui-form layui-form-pane">
+          <form action="/jie/reply" method="post">
+            <div class="layui-form-item layui-form-text">
+              <a name="comment"></a>
+              <div class="layui-input-block">
+                <textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容"  class="layui-textarea fly-editor" style="height: 150px;"></textarea>
+                <textarea class="layui-hide" id="L_contenthtml" name="contenthtml" placeholder="详细描述">1</textarea>
+                <!--<input class="layui-hide" name="thesisid" th:value="${thesis.thesisid}">-->
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <!--<input type="hidden" name="jid" value="123">-->
+              <input class="layui-hide" name="thesisid" th:value="${thesis.thesisid}">
+              <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md4">
+      <dl class="fly-panel fly-list-one">
+        <dt class="fly-panel-title">本周热议</dt>
+        <div th:each="thesis1,iterStat: ${thesisList}">
+          <dd>
+            <a th:href="'/jie/detail/'+${thesis1.thesisid}" th:text="${thesis1.title}"></a>
+            <!--<a th:href="'/jie/detail/'+${thesis1.thesisid}"><p th:text="${thesis1.title}"></p></a>-->
+            <i class="iconfont icon-pinglun1"></i>
+            <span th:text="${thesis1.commentcount}"> 16</span>
+            <!--<span th:texe="${thesis1.commentcount}"> 16</span>-->
+          </dd>
+        </div>
+        <!-- 无数据时 -->
+        <!--
+        <div class="fly-none">没有相关数据</div>
+        -->
+      </dl>
+
+      <div class="fly-panel">
+        <div class="fly-panel-title">
+          广告
+        </div>
+        <div class="fly-panel-main" th:each="advertising,iterStat: ${advertisings}">
+          <a th:href="@{${advertising.advertisinglink}}" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;" th:text="${advertising.advertisingcontent}">LayIM 3.0 - layui 旗舰之作</a>
+        </div>
+      </div>
+
+      <div class="fly-panel" style="padding: 20px 0; text-align: center;">
+        <img src="/images/weixin/weixin.png" style="max-width: 100%;" alt="weixin">
+        <p style="position: relative; color: #666;">微信扫码添加</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div th:replace="common/footer"></div>
+
+</body>
+
+</html>
